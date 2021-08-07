@@ -28,6 +28,11 @@ class AuthServiceProvider extends ServiceProvider
 
         if (!$this->app->routesAreCached()) {
             Passport::routes();
+
+            Passport::tokensCan([
+               'get-email' => 'Retrieve the email associated with your account',
+                'create-posts' => 'Create posts on behalf of your user.'
+            ]);
         }
     }
 }

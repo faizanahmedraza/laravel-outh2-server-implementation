@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:api','scopes:get-email'])->get('/user', function (Request $request) {
+    return $request->user()->makeVisible([
+        'email'
+    ]);
+});
+
+Route::middleware(['auth:api','scopes:create-posts'])->post('/posts/create',function (Request $request){
+    return $request->user()->posts()->create($request->only(['title','description']));
+});
+
+Route::get('/posts', function () {
+    return \App\Models\Post::with('user')->get();
 });
